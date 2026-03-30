@@ -66,3 +66,7 @@ WHERE member_id IN (
     WHERE joined_at > '2026-03-04'
 )
 ORDER BY name ASC;
+
+간단한 설명
+
+동아리(Clubs)와 회원(Members) 두 개의 엔티티를 설계하였습니다. club_id를 외래키로 설정하여 두 테이블 간의 관계를 정의했으며, SELECT 문 실행 시 WHERE 절 내부에 Subquery를 사용하여 특정 동아리에 소속된 인원을 필터링하거나 가입일 조건을 만족하는 데이터를 추출하도록 구현했습니다. 모든 결과는 ORDER BY를 통해 정렬되어 출력됩니다.
