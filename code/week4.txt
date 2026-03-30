@@ -1,0 +1,68 @@
+STEP 1: 시스템 선택
+
+1. 동아리 관리
+
+Step 2: 요구사항 작성
+
+1. 시스템은 동아리 정보와 회원 정보를 관리해야 한다.
+
+2. 각 동아리는 고유한 동아리명과 개설일을 가진다.
+
+3. 회원은 이름, 학번, 연락처 정보를 포함한다.
+
+4. 특정 동아리에 소속된 회원들의 명단을 조회할 수 있어야 한다.
+
+5. 특정 날짜 이후에 가입한 회원들의 정보를 확인할 수 있어야 한다.
+
+Step 3: 데이터 설계
+	
+엔티티 1: Clubs (동아리)
+
+- club_id (PK), club_name, created_at
+
+엔티티 2: Members (회원)
+
+- member_id (PK), student_id, name, phone, club_id (FK)
+
+Step 4: SQL 작성
+
+CREATE TABLE Clubs (
+    club_id INT PRIMARY KEY,
+    club_name VARCHAR(50) NOT NULL,
+    created_at DATE
+);
+
+CREATE TABLE Members (
+    member_id INT PRIMARY KEY,
+    student_id VARCHAR(20) UNIQUE,
+    name VARCHAR(50),
+    phone VARCHAR(20),
+    club_id INT,
+    joined_at DATE,
+    FOREIGN KEY (club_id) REFERENCES Clubs(club_id)
+);
+
+INSERT INTO Clubs VALUES (1, '코딩동아리', '2024-01-10');
+INSERT INTO Clubs VALUES (2, '테니스동아리', '2024-02-15');
+
+INSERT INTO Members VALUES (1, '20260001', '김철수', '010-1111-2222', 1, '2026-03-02');
+INSERT INTO Members VALUES (2, '20260002', '이영희', '010-3333-4444', 1, '2026-03-05');
+INSERT INTO Members VALUES (3, '20260003', '박민수', '010-5555-6666', 2, '2026-03-10');
+
+SELECT *
+FROM Members
+WHERE club_id = (
+    SELECT club_id 
+    FROM Clubs 
+    WHERE club_name = '코딩동아리'
+)
+ORDER BY joined_at DESC;
+
+SELECT name, student_id
+FROM Members
+WHERE member_id IN (
+    SELECT member_id 
+    FROM Members 
+    WHERE joined_at > '2026-03-04'
+)
+ORDER BY name ASC;
